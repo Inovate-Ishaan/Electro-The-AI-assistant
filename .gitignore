@@ -1,0 +1,11 @@
+
+venv/
+.env
+ffplay.exe
+program-log
+.vscode
+/myenv/
+myenv/
+Precise-Engine/precise-engine_0.3.zip
+Precise-Engine/precise-engine/
+*.so
