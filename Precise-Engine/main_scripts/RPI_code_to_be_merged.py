@@ -30,4 +30,5 @@ while True:
     bass = int(np.mean(fft_data[0:10])/sensitivity)
     bass = min(255,bass)
 
-    ser.write(bytes([bass]))
+    ser.write(bytes([bass]))  # here used [] to send the exact value as a byte otherwise it sends command for making an array of bytes of size 1 that has value 0 [0...0] instead of [0.....01]
+    

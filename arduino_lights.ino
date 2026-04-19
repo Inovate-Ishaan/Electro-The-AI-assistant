@@ -8,7 +8,16 @@ const int listening_hue = 180;
 const int idle_hue = 0;
 const int thinking_hue = 150;
 const int music_hue =170;
+
+
 const int music_delay = 50;
+const int deadzone = 100;
+
+const int rainbow_num =5;
+const int answer_num = 4;
+const int idle_num = 1;
+const int thinking_num = 3;
+const int listening_num =2;
 
 
 
@@ -25,21 +34,17 @@ void setup() {
 void loop(){
     
   if (Serial.available() > 0){
-    uint8_t bass = Serial.read();
-    music(bass);
+    uint8_t number = Serial.read();
+    if (number ==1){idle();}
+    if (number == 2){listening();}
+    if (number == 3) {thinking();}
+    if (number == 4) {answering();}
+    if (number == 5) {raibow();}
+    if (number >= 6) {music(number);}
   }
   else{
     idle();
   }
-// still have to write code for different scenarios
-
-
-
-  // listening();
-  // idle();
-  // answer();
-  // rainbow();
-
 }
 
 

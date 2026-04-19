@@ -12,6 +12,19 @@ import logging
 import random
 from main_scripts import music_downloader_yt
 import time
+import serial
+import subprocess
+
+
+try:
+    port_name = "/dev/ttyACM0"  # CHANGE ACCORDINGLY
+    ser = serial.Serial(port_name, 115200)   # communication with arduino
+    print("connected to arduino")
+
+except:
+    print("failed to communicate with arduino")
+
+
 
 #logging code
 logging.basicConfig(
@@ -34,10 +47,17 @@ base_prompt = """You are a table-top AI assistant. The following text is the use
 If the user asks or intends to play music, respond ONLY with:
 play_music <song name>
 
+If the user asks or intends to turn on rainbow lights, respond ONLY with:
+rainbow_lights
+
+
 For all other queries, give a short, precise, concise response without special characters. Begin with a brief introductory line. If the user asks for an explanation, then elaborate the response.
 \n"""
 
 r = sr.Recognizer()
+
+
+
 
 def play_tones(filename):
     try:
@@ -97,6 +117,15 @@ def process_response(response):
         query = response[10:]
         music_handler_response = music_downloader_yt.get_music(query)
         if music_handler_response[0] is True:
+            try:
+                music_file = subprocess.Popen(["python3", "/project_electro/Electro---The-AI-assistant/main_scripts/music_file.py"])
+            except:
+                print("error opening the music_file")
+
+
+
+                ###### need to add code for music fft....
+
             title = music_handler_response[1]
             play_response(f"Playing {title} from YouTube...")
             music_path = "/project_electro/Electro---The-AI-assistant/Precise-Engine/music.wav"
@@ -105,6 +134,11 @@ def process_response(response):
             return f"Played {title}"
         else:
             return f"Unable to play {query}. Some error occurred..."
+        
+    if "rainbow_lights" in response:
+        send_arduino(5) # command for rainbow lights
+
+
     else:
         return response
 
@@ -165,5 +199,18 @@ def main():
         
     #print("Say Electro!!!")
 
+def send_arduino(command):
+    ser.write(bytes([command])) # here used [] to send the exact value as a byte otherwise it sends command for making an array of bytes of size 1 that has value 0 [0...0] instead of [0.....01]
+
+
+
+
+
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
