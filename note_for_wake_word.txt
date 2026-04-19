@@ -1,0 +1,5 @@
+Pvporcupine is generally lighter than mycoft precise but
+to escape the problems caused in the initialisation procedure,
+I choose to go with precise, as it is meant to run on a dedicated rpi
+so it should not be a problem, and the fact that it is "fully"
+offline.
